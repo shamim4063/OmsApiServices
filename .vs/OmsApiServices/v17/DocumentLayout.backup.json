@@ -1,0 +1,104 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\OmsApiServices\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{0D674493-8181-4C53-A3D5-30BF25016C7C}|Gateway.Api\\Gateway.Api.csproj|d:\\omsapiservices\\gateway.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0D674493-8181-4C53-A3D5-30BF25016C7C}|Gateway.Api\\Gateway.Api.csproj|solutionrelative:gateway.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D8930AEF-8977-4789-8F19-99AC445DA963}|Catalog.Api\\Catalog.Api.csproj|d:\\omsapiservices\\catalog.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D8930AEF-8977-4789-8F19-99AC445DA963}|Catalog.Api\\Catalog.Api.csproj|solutionrelative:catalog.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0D674493-8181-4C53-A3D5-30BF25016C7C}|Gateway.Api\\Gateway.Api.csproj|d:\\omsapiservices\\gateway.api\\gateway.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{0D674493-8181-4C53-A3D5-30BF25016C7C}|Gateway.Api\\Gateway.Api.csproj|solutionrelative:gateway.api\\gateway.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CBB573AB-3B55-459D-A20A-2918657DF700}|Catalog.Domain\\Catalog.Domain.csproj|d:\\omsapiservices\\catalog.domain\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CBB573AB-3B55-459D-A20A-2918657DF700}|Catalog.Domain\\Catalog.Domain.csproj|solutionrelative:catalog.domain\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 733,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1793258730:0:{83107a3e-496a-485e-b455-16ddb978e55e}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\OmsApiServices\\Catalog.Api\\Program.cs",
+              "RelativeDocumentMoniker": "Catalog.Api\\Program.cs",
+              "ToolTip": "D:\\OmsApiServices\\Catalog.Api\\Program.cs",
+              "RelativeToolTip": "Catalog.Api\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-20T16:09:52.514Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\OmsApiServices\\Gateway.Api\\Program.cs",
+              "RelativeDocumentMoniker": "Gateway.Api\\Program.cs",
+              "ToolTip": "D:\\OmsApiServices\\Gateway.Api\\Program.cs",
+              "RelativeToolTip": "Gateway.Api\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-20T16:08:26.308Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Gateway.Api",
+              "DocumentMoniker": "D:\\OmsApiServices\\Gateway.Api\\Gateway.Api.csproj",
+              "RelativeDocumentMoniker": "Gateway.Api\\Gateway.Api.csproj",
+              "ToolTip": "D:\\OmsApiServices\\Gateway.Api\\Gateway.Api.csproj",
+              "RelativeToolTip": "Gateway.Api\\Gateway.Api.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-08-20T16:08:24.229Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Product.cs",
+              "DocumentMoniker": "D:\\OmsApiServices\\Catalog.Domain\\Product.cs",
+              "RelativeDocumentMoniker": "Catalog.Domain\\Product.cs",
+              "ToolTip": "D:\\OmsApiServices\\Catalog.Domain\\Product.cs",
+              "RelativeToolTip": "Catalog.Domain\\Product.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-20T15:52:43.404Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

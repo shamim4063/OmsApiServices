@@ -1,0 +1,44 @@
+﻿using Catalog.Domain;
+using Catalog.Infrastructure;
+using Microsoft.EntityFrameworkCore;
+using Serilog;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog((ctx, lc) => lc.ReadFrom.Configuration(ctx.Configuration));
+
+builder.Services.AddCatalogPersistence(builder.Configuration);
+builder.Services.AddHealthChecks()
+    .AddNpgSql(builder.Configuration.GetSection("Database")["ConnectionString"]!);
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+var app = builder.Build();
+app.UseSerilogRequestLogging();
+
+app.MapHealthChecks("/healthz");
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
+    await db.Database.MigrateAsync();
+}
+
+app.UseSwagger();
+app.UseSwaggerUI();
+
+app.MapGet("/v1/products", async (CatalogDbContext db) =>
+    await db.Products.AsNoTracking().ToListAsync());
+
+app.MapPost("/v1/products", async (CatalogDbContext db, ProductDto dto) =>
+{
+    var p = new Product(dto.Sku, dto.Name, dto.Description, dto.ImageMainUrl);
+    db.Add(p);
+    await db.SaveChangesAsync();
+    return Results.Created($"/v1/products/{p.Id}", new { p.Id });
+});
+
+app.Run();
+
+record ProductDto(string Sku, string Name, string? Description, string? ImageMainUrl);

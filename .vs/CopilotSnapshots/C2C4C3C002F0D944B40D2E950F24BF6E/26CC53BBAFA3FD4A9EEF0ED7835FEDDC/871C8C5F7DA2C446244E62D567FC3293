@@ -1,0 +1,3 @@
+﻿namespace Catalog.Application.Products;
+
+public record ProductDto(string Sku, string Name, string? Description, string? ImageMainUrl);

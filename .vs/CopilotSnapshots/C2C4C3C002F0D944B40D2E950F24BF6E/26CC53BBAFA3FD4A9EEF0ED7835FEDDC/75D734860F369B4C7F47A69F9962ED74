@@ -1,0 +1,34 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using Catalog.Domain;
+using Catalog.Infrastructure;
+using Microsoft.EntityFrameworkCore;
+using Catalog.Application.Products;
+
+namespace Catalog.Api.Controllers;
+
+[ApiController]
+[Route("v1/products")]
+public class ProductsController : ControllerBase
+{
+    private readonly CatalogDbContext _db;
+    public ProductsController(CatalogDbContext db)
+    {
+        _db = db;
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        var products = await _db.Products.AsNoTracking().ToListAsync();
+        return Ok(products);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody] ProductDto dto)
+    {
+        var p = new Product(dto.Sku, dto.Name, dto.Description, dto.ImageMainUrl);
+        _db.Add(p);
+        await _db.SaveChangesAsync();
+        return Created($"/v1/products/{p.Id}", new { p.Id });
+    }
+}

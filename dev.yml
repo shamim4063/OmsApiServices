@@ -1,0 +1,32 @@
+services:
+  gateway.api:
+    build:
+      context: ../..
+      dockerfile: Src/Services/Gateway/Gateway.Api/Dockerfile
+    environment:
+      ASPNETCORE_URLS: http://+:8080
+    ports:
+      - "8080:8080"
+    depends_on:
+      - catalog.api
+      - inventory.api
+      - sales.api
+
+  catalog.api:
+    build:
+      context: ../..
+      dockerfile: Src/Services/Catalog/Catalog.Api/Dockerfile
+    environment:
+      ASPNETCORE_URLS: http://+:8080
+      Database__ConnectionString: Host=postgres;Port=5432;Database=erp;Username=erp;Password=erp
+      Database__Schema: catalog
+    expose: [ "8080" ]
+    depends_on: [ postgres ]
+
+  #inventory.api:
+    # similar pattern...
+   # expose: [ "8080" ]
+
+  #sales.api:
+    # similar pattern...
+    # expose: [ "8080" ]
