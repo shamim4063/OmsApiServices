@@ -39,6 +39,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{720BBE9E-D
 	ProjectSection(SolutionItems) = preProject
 		Architecture.md = Architecture.md
 		copilot-instructions.md = copilot-instructions.md
+		schema-sketch.md = schema-sketch.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateway", "Gateway", "{1019CA07-0818-444C-A6D0-1C5B39257634}"
