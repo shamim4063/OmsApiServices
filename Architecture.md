@@ -18,16 +18,16 @@ Target stack: **.NET 9**, **PostgreSQL**, **Docker**, **EF Core 9**, **MassTrans
 ## Solution Layout
 
 ```
-erp.sln
+OmsApiServices.sln
 │
-├─ src/
-│  ├─ building-blocks/
+├─ Src/
+│  ├─ BuildingBlocks/
 │  │  ├─ Persistence/
 │  │  ├─ Messaging/
 │  │  └─ Web/
 │  │
-│  ├─ services/
-│  │  ├─ catalog/
+│  ├─ Services/
+│  │  ├─ Catalog/
 │  │  │  ├─ Catalog.Api/
 │  │  │  ├─ Catalog.Application/
 │  │  │  ├─ Catalog.Domain/
@@ -36,13 +36,13 @@ erp.sln
 │  │
 │  └─ contracts/ (optional: OpenAPI/AsyncAPI specs, DTOs)
 │
-├─ deploy/
+├─ Deploy/
 │  ├─ compose/
 │  │  ├─ infra.yml
 │  │  └─ dev.yml (later)
 │  └─ k8s/helm/ (future deploy manifests)
 │
-└─ tests/
+└─ Tests/
    ├─ component/
    └─ contract/
 ```

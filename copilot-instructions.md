@@ -5,6 +5,7 @@ These instructions guide AI coding assistants (Copilot, ChatGPT, etc.) on how to
 ---
 
 ## Repository Architecture (Authoritative)
+```
 OmsApiServices/
 ├─ Src/
 │  ├─ BuildingBlocks/
@@ -24,6 +25,7 @@ OmsApiServices/
 │     └─ dev.yml
 ├─ Tests/
 └─ OmsApiServices.sln
+```
 ### Boundaries per Layer (MUST NOT be violated)
 
 - **Domain (`*.Domain`)**
