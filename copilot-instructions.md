@@ -79,11 +79,13 @@ For each main entity in `Catalog.Application` (such as Product, Category), use t
   - Interface for business rules that require querying the data store (e.g., SKU uniqueness).
 
 #### Example (Product):Catalog.Application/Products/
+```
 ├─ ProductRequests.cs      // All MediatR requests (commands/queries)
 ├─ ProductHandlers.cs      // All MediatR handlers
 ├─ IProductReaderWriter.cs // Reader/writer interfaces
 ├─ ProductDto.cs           // DTO for Product
 ├─ IProductUniqueness.cs   // (optional) Uniqueness abstraction
+```
 #### Why this structure?
 - **Separation of Concerns:** Each file has a single responsibility (requests, handlers, data access contracts, DTOs).
 - **CQRS:** Commands and queries are defined and handled separately.
@@ -194,32 +196,6 @@ Update-Database -StartupProject <Service>.Api- Provider and tools must match EF 
 - [ ] No direct dependencies from Domain to EF Core / ASP.NET.
 - [ ] Unit tests for Domain/Application logic (if applicable).
 
----
-
-## Useful Snippets
-
-**Register DbContext with schema-specific migrations history:**services.AddDbContext<CatalogDbContext>(opt =>
-    opt.UseNpgsql(db.ConnectionString, npg =>
-        npg.MigrationsHistoryTable("__EFMigrationsHistory", "catalog")));
-**Minimal API endpoints pattern:**app.MapGet("/v1/products", async (CatalogDbContext db) =>
-    await db.Products.AsNoTracking().ToListAsync());
-
-app.MapPost("/v1/products", async (CatalogDbContext db, ProductDto dto) =>
-{
-    var p = new Product(dto.Sku, dto.Name, dto.Description, dto.ImageMainUrl);
-    db.Add(p);
-    await db.SaveChangesAsync();
-    return Results.Created($"/v1/products/{p.Id}", new { p.Id });
-});
-**Outbox entity (shared):**public sealed class OutboxMessage
-{
-    public Guid Id { get; init; } = Guid.NewGuid();
-    public DateTime OccurredAt { get; init; } = DateTime.UtcNow;
-    public string Type { get; init; } = default!;
-    public string Payload { get; init; } = default!;
-    public DateTime? ProcessedAt { get; set; }
-}
----
 
 ## Local Dev Workflow
 
