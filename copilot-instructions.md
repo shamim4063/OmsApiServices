@@ -5,8 +5,6 @@ These instructions guide AI coding assistants (Copilot, ChatGPT, etc.) on how to
 ---
 
 ## Repository Architecture (Authoritative)
-
-```
 OmsApiServices/
 ├─ Src/
 │  ├─ BuildingBlocks/
@@ -26,8 +24,6 @@ OmsApiServices/
 │     └─ dev.yml
 ├─ Tests/
 └─ OmsApiServices.sln
-```
-
 ### Boundaries per Layer (MUST NOT be violated)
 
 - **Domain (`*.Domain`)**
@@ -51,6 +47,54 @@ OmsApiServices/
 
 ---
 
+## Application Layer CQRS & File Structure
+
+### CQRS/MediatR Pattern
+- All business use-cases are modeled as MediatR requests (commands/queries) and handled by dedicated handlers.
+- Read and write operations are separated (CQRS principle).
+- Application layer depends only on abstractions (interfaces), not infrastructure or frameworks.
+
+### File Structure for Each Aggregate/Entity (e.g., Product, Category)
+
+For each main entity in `Catalog.Application` (such as Product, Category), use the following structure:
+
+- **ProductRequests.cs**
+  - Contains all MediatR request records (commands and queries) for the entity.
+  - Example: `GetProductById`, `ListProducts`, `CreateProduct`, `UpdateProduct`, `DeleteProduct`.
+
+- **ProductHandlers.cs**
+  - Contains all MediatR handler classes for the requests defined above.
+  - Example: `GetProductByIdHandler`, `CreateProductHandler`, etc.
+
+- **IProductReaderWriter.cs**
+  - Contains interfaces for reading and writing data for the entity.
+  - Example: `IProductReader`, `IProductWriter`.
+
+- **ProductDto.cs**
+  - Data Transfer Object for the entity, used for API/application boundaries.
+
+- **IProductUniqueness.cs** (if needed)
+  - Interface for business rules that require querying the data store (e.g., SKU uniqueness).
+
+#### Example (Product):Catalog.Application/Products/
+├─ ProductRequests.cs      // All MediatR requests (commands/queries)
+├─ ProductHandlers.cs      // All MediatR handlers
+├─ IProductReaderWriter.cs // Reader/writer interfaces
+├─ ProductDto.cs           // DTO for Product
+├─ IProductUniqueness.cs   // (optional) Uniqueness abstraction
+#### Why this structure?
+- **Separation of Concerns:** Each file has a single responsibility (requests, handlers, data access contracts, DTOs).
+- **CQRS:** Commands and queries are defined and handled separately.
+- **MediatR:** Decouples request sending from handling, making the codebase modular and testable.
+- **Abstraction:** Interfaces for data access allow for easy testing and swapping implementations.
+- **Consistency:** New features and aggregates follow the same, predictable pattern.
+
+#### When to use this pattern?
+- For all main aggregates/entities in the Application layer.
+- When you want to enforce clean, scalable, and testable code in a microservices or DDD context.
+
+---
+
 ## Database Policy (Critical)
 
 - One PostgreSQL instance for dev; **one schema per service** (e.g., `catalog`, `inventory`, `sales`).
@@ -62,12 +106,8 @@ OmsApiServices/
 ### EF Core Tooling
 
 - **PMC**: set *Default project* to `*.Infrastructure` (where `DbContext` lives).
-- Use the API as startup (or a design-time factory):
-  ```powershell
-  Add-Migration <Name> -StartupProject <Service>.Api
-  Update-Database -StartupProject <Service>.Api
-  ```
-- Provider and tools must match EF Core 9 (e.g., `Npgsql.EntityFrameworkCore.PostgreSQL 9.x`).
+- Use the API as startup (or a design-time factory):Add-Migration <Name> -StartupProject <Service>.Api
+Update-Database -StartupProject <Service>.Api- Provider and tools must match EF Core 9 (e.g., `Npgsql.EntityFrameworkCore.PostgreSQL 9.x`).
 - Migrations history table lives in the service schema (`__EFMigrationsHistory`).
 
 ---
@@ -111,6 +151,7 @@ OmsApiServices/
 ### Application
 - Command/Query handlers with validation and unit tests.
 - DTOs mapped from Domain types without leaking EF Core types.
+- **CQRS/MediatR request/handler structure as described above.**
 
 ### Infrastructure
 - `DbContext` entity configurations, migrations, repositories.
@@ -138,6 +179,7 @@ OmsApiServices/
 - `*.Infrastructure/Migrations/*`: EF migrations for the service schema.
 - `*.Domain/*`: entities, value objects, domain services only.
 - `*.Application/*`: use-cases, validators, mappers (may reference Domain only).
+- **CQRS/MediatR structure for each aggregate as described above.**
 
 ---
 
@@ -154,16 +196,10 @@ OmsApiServices/
 
 ## Useful Snippets
 
-**Register DbContext with schema-specific migrations history:**
-```csharp
-services.AddDbContext<CatalogDbContext>(opt =>
+**Register DbContext with schema-specific migrations history:**services.AddDbContext<CatalogDbContext>(opt =>
     opt.UseNpgsql(db.ConnectionString, npg =>
         npg.MigrationsHistoryTable("__EFMigrationsHistory", "catalog")));
-```
-
-**Minimal API endpoints pattern:**
-```csharp
-app.MapGet("/v1/products", async (CatalogDbContext db) =>
+**Minimal API endpoints pattern:**app.MapGet("/v1/products", async (CatalogDbContext db) =>
     await db.Products.AsNoTracking().ToListAsync());
 
 app.MapPost("/v1/products", async (CatalogDbContext db, ProductDto dto) =>
@@ -173,11 +209,7 @@ app.MapPost("/v1/products", async (CatalogDbContext db, ProductDto dto) =>
     await db.SaveChangesAsync();
     return Results.Created($"/v1/products/{p.Id}", new { p.Id });
 });
-```
-
-**Outbox entity (shared):**
-```csharp
-public sealed class OutboxMessage
+**Outbox entity (shared):**public sealed class OutboxMessage
 {
     public Guid Id { get; init; } = Guid.NewGuid();
     public DateTime OccurredAt { get; init; } = DateTime.UtcNow;
@@ -185,8 +217,6 @@ public sealed class OutboxMessage
     public string Payload { get; init; } = default!;
     public DateTime? ProcessedAt { get; set; }
 }
-```
-
 ---
 
 ## Local Dev Workflow

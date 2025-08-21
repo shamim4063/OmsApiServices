@@ -60,4 +60,40 @@ public class ProductsController : ControllerBase
             return Problem(title: "Product conflict", detail: ex.Message, statusCode: StatusCodes.Status409Conflict);
         }
     }
+
+    /// <summary>Update a product.</summary>
+    [HttpPut("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateProduct cmd, CancellationToken ct)
+    {
+        if (id != cmd.Id) return BadRequest();
+        try
+        {
+            await _mediator.Send(cmd, ct);
+            return NoContent();
+        }
+        catch (ArgumentException ex)
+        {
+            return NotFound(new { error = ex.Message });
+        }
+    }
+
+    /// <summary>Delete a product.</summary>
+    [HttpDelete("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Delete(Guid id, CancellationToken ct)
+    {
+        try
+        {
+            await _mediator.Send(new DeleteProduct(id), ct);
+            return NoContent();
+        }
+        catch (ArgumentException ex)
+        {
+            return NotFound(new { error = ex.Message });
+        }
+    }
 }
