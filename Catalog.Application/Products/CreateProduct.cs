@@ -1,11 +1,12 @@
 ﻿using Catalog.Domain;
 using Catalog.Application.Abstractions;
+using MediatR;
 
 namespace Catalog.Application.Products;
 
-public sealed record CreateProduct(string Sku, string Name);
+public sealed record CreateProduct(string Sku, string Name) : IRequest<Guid>;
 
-public sealed class CreateProductHandler
+public sealed class CreateProductHandler : IRequestHandler<CreateProduct, Guid>
 {
     private readonly IProductUniqueness _uniqueness;
     private readonly IProductsWriter _writer;

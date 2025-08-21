@@ -1,6 +1,7 @@
 using Catalog.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using MediatR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,8 +9,11 @@ builder.Host.UseSerilog((ctx, lc) => lc.ReadFrom.Configuration(ctx.Configuration
 
 builder.Services.AddCatalogPersistence(builder.Configuration);
 
-// 2) Infra implementations for Application abstractions
+// Register infrastructure services (single extension method)
 builder.Services.AddCatalogInfrastructure();
+
+// Add MediatR for Application layer
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Catalog.Application.Products.CreateProduct>());
 
 builder.Services.AddHealthChecks()
     .AddNpgSql(builder.Configuration.GetSection("Database")["ConnectionString"]!);

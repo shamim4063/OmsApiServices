@@ -14,6 +14,8 @@ public sealed class CatalogDbContext : DbContext
     }
 
     public DbSet<Product> Products => Set<Product>();
+    public DbSet<Category> Categories => Set<Category>();
+    public DbSet<ProductCategory> ProductCategories => Set<ProductCategory>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -26,6 +28,30 @@ public sealed class CatalogDbContext : DbContext
             b.Property(x => x.Sku).HasMaxLength(64).IsRequired();
             b.HasIndex(x => x.Sku).IsUnique();
             b.Property(x => x.Name).HasMaxLength(256).IsRequired();
+            b.HasMany(x => x.ProductCategories)
+                .WithOne(pc => pc.Product)
+                .HasForeignKey(pc => pc.ProductId);
+        });
+
+        modelBuilder.Entity<Category>(b =>
+        {
+            b.ToTable("category");
+            b.HasKey(x => x.Id);
+            b.Property(x => x.Name).HasMaxLength(128).IsRequired();
+            b.Property(x => x.Description).HasMaxLength(512);
+            b.HasOne(x => x.Parent)
+                .WithMany(x => x.Children)
+                .HasForeignKey(x => x.ParentId)
+                .OnDelete(DeleteBehavior.Restrict);
+            b.HasMany(x => x.ProductCategories)
+                .WithOne(pc => pc.Category)
+                .HasForeignKey(pc => pc.CategoryId);
+        });
+
+        modelBuilder.Entity<ProductCategory>(b =>
+        {
+            b.ToTable("product_category");
+            b.HasKey(pc => new { pc.ProductId, pc.CategoryId });
         });
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Catalog.Application.Products;
 using Microsoft.EntityFrameworkCore;
 
-namespace Catalog.Infrastructure.Persistence;
+namespace Catalog.Infrastructure.Persistence.Products;
 
 public sealed class ProductUniqueness : IProductUniqueness
 {

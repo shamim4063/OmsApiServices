@@ -1,7 +1,7 @@
 ﻿using Catalog.Application.Products;
 using Catalog.Domain;
 
-namespace Catalog.Infrastructure.Persistence;
+namespace Catalog.Infrastructure.Persistence.Products;
 
 public sealed class ProductsWriter : IProductsWriter
 {

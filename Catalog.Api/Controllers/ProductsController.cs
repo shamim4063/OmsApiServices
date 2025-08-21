@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Catalog.Domain;
-using Catalog.Infrastructure;
-using Microsoft.EntityFrameworkCore;
+using MediatR;
 using Catalog.Application.Products;
 
 namespace Catalog.Api.Controllers;
@@ -10,13 +8,11 @@ namespace Catalog.Api.Controllers;
 [Route("v1/products")]
 public class ProductsController : ControllerBase
 {
-    private readonly IProductReader _reader;
-    private readonly CreateProductHandler _create;
+    private readonly IMediator _mediator;
 
-    public ProductsController(IProductReader reader, CreateProductHandler create)
+    public ProductsController(IMediator mediator)
     {
-        _reader = reader;
-        _create = create;
+        _mediator = mediator;
     }
 
     /// <summary>Get a single product by id.</summary>
@@ -25,7 +21,7 @@ public class ProductsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<ProductDto>> GetById(Guid id, CancellationToken ct)
     {
-        var dto = await _reader.ById(id, ct);
+        var dto = await _mediator.Send(new GetProductById(id), ct);
         if (dto is null) return NotFound();
         return Ok(dto);
     }
@@ -39,7 +35,7 @@ public class ProductsController : ControllerBase
         CancellationToken ct = default)
     {
         if (take <= 0 || take > 100) take = 20;
-        var list = await _reader.List(skip, take, ct);
+        var list = await _mediator.Send(new ListProducts(skip, take), ct);
         return Ok(list);
     }
 
@@ -52,7 +48,7 @@ public class ProductsController : ControllerBase
     {
         try
         {
-            var id = await _create.Handle(cmd, ct);
+            var id = await _mediator.Send(cmd, ct);
             return Created($"/v1/products/{id}", new { id });
         }
         catch (ArgumentException ex)
