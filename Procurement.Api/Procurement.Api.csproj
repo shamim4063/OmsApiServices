@@ -7,11 +7,26 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AspNetCore.HealthChecks.NpgSql" Version="9.0.0" />
+    <PackageReference Include="MediatR" Version="13.0.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="9.0.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="9.0.3" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BuildingBlocks.Messaging\BuildingBlocks.Messaging.csproj" />
+    <ProjectReference Include="..\BuildingBlocks.Persistence\BuildingBlocks.Persistence.csproj" />
+    <ProjectReference Include="..\BuildingBlocks.Web\BuildingBlocks.Web.csproj" />
     <ProjectReference Include="..\Procurement.Application\Procurement.Application.csproj" />
+    <ProjectReference Include="..\Procurement.Domain\Procurement.Domain.csproj" />
+    <ProjectReference Include="..\Procurement.Infrastructure\Procurement.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
