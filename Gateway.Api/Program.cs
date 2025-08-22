@@ -3,7 +3,7 @@ using Serilog;
 var builder = WebApplication.CreateBuilder(args);
 
 // Serilog (optional)
-builder.Host.UseSerilog((ctx, lc) => lc.ReadFrom.Configuration(ctx.Configuration));
+//builder.Host.UseSerilog((ctx, lc) => lc.ReadFrom.Configuration(ctx.Configuration));
 
 // YARP
 builder.Services.AddReverseProxy()
@@ -29,7 +29,7 @@ builder.Services.AddCors(o => o.AddPolicy("default", p =>
 
 var app = builder.Build();
 
-app.UseSerilogRequestLogging();
+//app.UseSerilogRequestLogging();
 app.UseCors("default");
 
 // Auth (see section 5) goes before proxy
@@ -39,7 +39,7 @@ app.UseCors("default");
 // Protect all proxied routes (or per-route via metadata)
 app.MapReverseProxy().RequireAuthorization();
 
-app.UseRateLimiter();
+//app.UseRateLimiter();
 
 // Basic health
 app.MapGet("/healthz", () => Results.Ok(new { status = "ok" }));

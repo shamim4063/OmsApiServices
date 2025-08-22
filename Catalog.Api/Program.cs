@@ -4,8 +4,7 @@ using Serilog;
 using MediatR;
 
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Host.UseSerilog((ctx, lc) => lc.ReadFrom.Configuration(ctx.Configuration));
+//builder.Host.UseSerilog((ctx, lc) => lc.ReadFrom.Configuration(ctx.Configuration));
 
 builder.Services.AddCatalogPersistence(builder.Configuration);
 
@@ -23,7 +22,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-app.UseSerilogRequestLogging();
+//app.UseSerilogRequestLogging();
 
 app.MapHealthChecks("/healthz");
 
@@ -40,4 +39,6 @@ app.UseSwaggerUI();
 
 app.MapControllers();
 
+
 app.Run();
+

@@ -1,8 +1,6 @@
 using BuildingBlocks.Persistence;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
 namespace Procurement.Infrastructure;
 
 public static class ServiceCollectionExtensions

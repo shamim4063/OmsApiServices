@@ -5,7 +5,7 @@ using MediatR;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Host.UseSerilog((ctx, lc) => lc.ReadFrom.Configuration(ctx.Configuration));
+//builder.Host.UseSerilog((ctx, lc) => lc.ReadFrom.Configuration(ctx.Configuration));
 
 builder.Services.AddProcurementPersistence(builder.Configuration);
 
@@ -23,18 +23,18 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-app.UseSerilogRequestLogging();
+//app.UseSerilogRequestLogging();
 
 app.MapHealthChecks("/healthz");
 
 // Apply migrations in dev (optional)
-if (app.Environment.IsDevelopment())
-{
-    using var scope = app.Services.CreateScope();
-    // Replace with your ProcurementDbContext when implemented
-    // var db = scope.ServiceProvider.GetRequiredService<ProcurementDbContext>();
-    // await db.Database.MigrateAsync();
-}
+//if (app.Environment.IsDevelopment())
+//{
+//    using var scope = app.Services.CreateScope();
+//    // Replace with your ProcurementDbContext when implemented
+//    // var db = scope.ServiceProvider.GetRequiredService<ProcurementDbContext>();
+//    // await db.Database.MigrateAsync();
+//}
 
 app.UseSwagger();
 app.UseSwaggerUI();
