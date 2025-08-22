@@ -51,6 +51,45 @@ namespace Procurement.Infrastructure.Migrations
 
                     b.ToTable("supplier", "procurement");
                 });
+
+            modelBuilder.Entity("Procurement.Domain.SupplierProduct", b =>
+                {
+                    b.Property<Guid>("SupplierId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("character varying(3)");
+
+                    b.Property<int?>("LeadTimeDays")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<string>("SupplierSku")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
+
+                    b.HasKey("SupplierId", "ProductId");
+
+                    b.ToTable("supplier_product", "procurement");
+                });
+
+            modelBuilder.Entity("Procurement.Domain.SupplierProduct", b =>
+                {
+                    b.HasOne("Procurement.Domain.Supplier", "Supplier")
+                        .WithMany()
+                        .HasForeignKey("SupplierId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Supplier");
+                });
 #pragma warning restore 612, 618
         }
     }

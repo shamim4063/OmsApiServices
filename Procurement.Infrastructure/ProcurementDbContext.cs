@@ -14,6 +14,7 @@ public sealed class ProcurementDbContext : DbContext
     }
 
     public DbSet<Supplier> Suppliers => Set<Supplier>();
+    public DbSet<SupplierProduct> SupplierProducts => Set<SupplierProduct>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -28,6 +29,20 @@ public sealed class ProcurementDbContext : DbContext
             b.Property(x => x.TaxId).HasMaxLength(64);
             b.Property(x => x.IsActive).IsRequired();
             b.Property(x => x.CreatedAt).IsRequired();
+        });
+
+        modelBuilder.Entity<SupplierProduct>(b =>
+        {
+            b.ToTable("supplier_product");
+            b.HasKey(x => new { x.SupplierId, x.ProductId });
+            b.Property(x => x.SupplierSku).HasMaxLength(128);
+            b.Property(x => x.Price).HasColumnType("numeric(18,2)").IsRequired();
+            b.Property(x => x.Currency).HasMaxLength(3).IsRequired();
+            b.Property(x => x.LeadTimeDays);
+            b.HasOne(x => x.Supplier)
+                .WithMany()
+                .HasForeignKey(x => x.SupplierId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
     }
 }
