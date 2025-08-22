@@ -37,7 +37,7 @@ app.UseCors("default");
 //app.UseAuthorization();
 
 // Protect all proxied routes (or per-route via metadata)
-app.MapReverseProxy().RequireAuthorization();
+// app.MapReverseProxy().RequireAuthorization();
 
 //app.UseRateLimiter();
 

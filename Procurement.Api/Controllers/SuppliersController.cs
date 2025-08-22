@@ -4,7 +4,7 @@ using MediatR;
 namespace Procurement.Api.Controllers;
 
 [ApiController]
-[Route("v1/procurement/suppliers")]
+[Route("v1/suppliers")]
 public class SuppliersController : ControllerBase
 {
     /// <summary>Get a single supplier by id.</summary>
