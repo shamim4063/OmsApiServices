@@ -1,7 +1,6 @@
 ﻿using Catalog.Application.Abstractions;
 using Catalog.Application.Products;
 using Catalog.Application.Categories;
-using Catalog.Infrastructure.Persistence;
 using Catalog.Infrastructure.Persistence.Products;
 using Catalog.Infrastructure.Persistence.Categories;
 using Microsoft.Extensions.DependencyInjection;

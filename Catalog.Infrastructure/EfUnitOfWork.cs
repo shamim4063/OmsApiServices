@@ -1,6 +1,6 @@
 ﻿using Catalog.Application.Abstractions;
 
-namespace Catalog.Infrastructure.Persistence;
+namespace Catalog.Infrastructure;
 
 public sealed class EfUnitOfWork : IUnitOfWork
 {

@@ -1,4 +1,6 @@
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Procurement.Application.Abstractions;
+using Procurement.Application.Suppliers;
 
 namespace Procurement.Infrastructure;
 
@@ -6,11 +8,12 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddProcurementInfrastructure(this IServiceCollection services)
     {
-        // Register your infrastructure services here (repositories, unit of work, etc.)
-        // Example:
-        // services.AddScoped<ISupplierWriter, SupplierWriter>();
-        // services.AddScoped<ISupplierReader, SupplierReader>();
-        // services.AddScoped<IUnitOfWork, EfUnitOfWork>();
+        // Application abstractions -> EF Core implementations
+        services.AddScoped<IUnitOfWork, EfUnitOfWork>();
+        services.AddScoped<ISupplierReader, Persistence.Suppliers.SupplierReader>();
+        services.AddScoped<ISupplierWriter, Persistence.Suppliers.SupplierWriter>();
+        // Add other infrastructure services here, e.g., email sender, file storage, etc.
+        // If you introduce outbox/consumers, register them here as well.
         return services;
     }
 }

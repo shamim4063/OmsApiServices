@@ -2,6 +2,7 @@ using Procurement.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using MediatR;
+using Procurement.Application.Suppliers; // Add this for handler type
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +14,7 @@ builder.Services.AddProcurementPersistence(builder.Configuration);
 builder.Services.AddProcurementInfrastructure();
 
 // Add MediatR for Application layer
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Procurement.Application.Class1>());
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<GetSupplierByIdHandler>());
 
 builder.Services.AddHealthChecks()
     .AddNpgSql(builder.Configuration.GetSection("Database")["ConnectionString"]!);
