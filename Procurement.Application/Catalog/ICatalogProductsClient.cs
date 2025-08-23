@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Procurement.Application.Catalog;
 
-namespace Procurement.Application.Catalog
+public interface ICatalogProductsClient
 {
-    internal class ICatalogProductsClient
-    {
-    }
+    Task<IReadOnlyDictionary<Guid, ProductDto>> GetByIdsAsync(IEnumerable<Guid> ids, CancellationToken ct);
 }
+
+public sealed record ProductDto(
+    Guid Id, string Sku, string Name, string? Description, string? ImageMainUrl);
+
