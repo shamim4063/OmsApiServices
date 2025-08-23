@@ -1,8 +1,12 @@
-using Procurement.Infrastructure;
-using Microsoft.EntityFrameworkCore;
-using Serilog;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Http.Resilience;
+using Polly;
+using Procurement.Application.Catalog;
 using Procurement.Application.Suppliers; // Add this for handler type
+using Procurement.Infrastructure;
+using Procurement.Infrastructure.Catalog;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +26,15 @@ builder.Services.AddHealthChecks()
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
+// Base URL comes from config (dev: docker-compose DNS, prod: K8s Service DNS)
+builder.Services.AddHttpClient<ICatalogProductsClient, CatalogProductsClient>(client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["Services:Catalog:BaseUrl"]!);
+    client.Timeout = TimeSpan.FromSeconds(10);
+});
+
 
 var app = builder.Build();
 //app.UseSerilogRequestLogging();
