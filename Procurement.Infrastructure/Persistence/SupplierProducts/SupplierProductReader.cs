@@ -1,36 +1,58 @@
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Procurement.Application.SupplierProducts;
 using Procurement.Domain;
 
-namespace Procurement.Infrastructure.Persistence.SupplierProducts
+namespace Procurement.Infrastructure.Persistence.SupplierProducts;
+public class SupplierProductReader : ISupplierProductReader
 {
-    public interface ISupplierProductReader
+    private readonly ProcurementDbContext _db;
+    public SupplierProductReader(ProcurementDbContext db) => _db = db;
+
+    public async Task<SupplierProductDto?> ById(Guid supplierId, Guid productId, CancellationToken ct)
     {
-        Task<SupplierProduct?> GetByIdAsync(Guid supplierId, Guid productId, CancellationToken ct = default);
-        Task<List<SupplierProduct>> ListBySupplierAsync(Guid supplierId, CancellationToken ct = default);
+        return await _db.SupplierProducts
+            .Where(sp => sp.SupplierId == supplierId && sp.ProductId == productId)
+            .Select(sp => new SupplierProductDto(
+                sp.SupplierId,
+                sp.ProductId,
+                sp.SupplierSku,
+                sp.Price,
+                sp.Currency,
+                sp.LeadTimeDays
+            ))
+            .FirstOrDefaultAsync(ct);
     }
 
-    public class SupplierProductReader : ISupplierProductReader
+    public async Task<IReadOnlyList<SupplierProductDto>> ListBySupplier(Guid supplierId, CancellationToken ct)
     {
-        private readonly ProcurementDbContext _db;
-        public SupplierProductReader(ProcurementDbContext db) => _db = db;
+        return await _db.SupplierProducts
+            .Where(sp => sp.SupplierId == supplierId)
+            .Select(sp => new SupplierProductDto(
+                sp.SupplierId,
+                sp.ProductId,
+                sp.SupplierSku,
+                sp.Price,
+                sp.Currency,
+                sp.LeadTimeDays
+            ))
+            .ToListAsync(ct);
+    }
 
-        public async Task<SupplierProduct?> GetByIdAsync(Guid supplierId, Guid productId, CancellationToken ct = default)
-        {
-            return await _db.SupplierProducts
-                .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.SupplierId == supplierId && x.ProductId == productId, ct);
-        }
-
-        public async Task<List<SupplierProduct>> ListBySupplierAsync(Guid supplierId, CancellationToken ct = default)
-        {
-            return await _db.SupplierProducts
-                .AsNoTracking()
-                .Where(x => x.SupplierId == supplierId)
-                .ToListAsync(ct);
-        }
+    public async Task<IReadOnlyList<SupplierProductDto>> List(int skip, int take, CancellationToken ct)
+    {
+        return await _db.SupplierProducts
+            .OrderBy(sp => sp.SupplierId)
+            .ThenBy(sp => sp.ProductId)
+            .Skip(skip).Take(take)
+            .Select(sp => new SupplierProductDto(
+                sp.SupplierId,
+                sp.ProductId,
+                sp.SupplierSku,
+                sp.Price,
+                sp.Currency,
+                sp.LeadTimeDays
+            ))
+            .ToListAsync(ct);
     }
 }
+
