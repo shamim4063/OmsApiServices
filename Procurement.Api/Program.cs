@@ -26,7 +26,7 @@ builder.Services.AddSwaggerGen();
 
 
 // Base URL comes from config (dev: docker-compose DNS, prod: K8s Service DNS)
-builder.Services.AddHttpClient<ICatalogProductsClient, CatalogProductsClient>(client =>
+builder.Services.AddHttpClient("Catalog", client =>
 {
     client.BaseAddress = new Uri(builder.Configuration["Services:Catalog:BaseUrl"]!);
     client.Timeout = TimeSpan.FromSeconds(10);
