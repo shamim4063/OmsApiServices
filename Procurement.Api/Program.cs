@@ -1,7 +1,4 @@
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Http.Resilience;
-using Polly;
 using Procurement.Application.Catalog;
 using Procurement.Application.Suppliers; // Add this for handler type
 using Procurement.Infrastructure;
