@@ -37,4 +37,20 @@ public sealed class ProductReader : IProductReader
                      p.ProductCategories.Select(pc => pc.CategoryId).ToList()
                  ))
                  .ToListAsync(ct);
+    public async Task<List<ProductDto>> ByIds(List<Guid> ids, CancellationToken ct)
+    {
+        if (ids == null || ids.Count == 0) return new List<ProductDto>();
+        return await _db.Products
+            .Where(p => ids.Contains(p.Id))
+            .Select(p => new ProductDto(
+                p.Id,
+                p.Sku,
+                p.Name,
+                p.Description,
+                p.ImageMainUrl,
+                p.IsActive,
+                p.ProductCategories.Select(pc => pc.CategoryId).ToList()
+            ))
+            .ToListAsync(ct);
+    }
 }

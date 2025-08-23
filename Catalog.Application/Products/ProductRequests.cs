@@ -11,6 +11,8 @@ public sealed record CreateProduct(
     string? ImageMainUrl,
     List<Guid> CategoryIds
 ) : IRequest<Guid>;
+public sealed record GetProductsByIds(List<Guid> Ids) : IRequest<List<ProductDto>>;
+
 public sealed record UpdateProduct(
     Guid Id,
     string Sku,

@@ -27,12 +27,12 @@ var app = builder.Build();
 app.MapHealthChecks("/healthz");
 
 // Apply migrations in dev (optional)
-if (app.Environment.IsDevelopment())
-{
-    using var scope = app.Services.CreateScope();
-    var db = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
-    await db.Database.MigrateAsync();
-}
+// if (app.Environment.IsDevelopment())
+// {
+//     using var scope = app.Services.CreateScope();
+//     var db = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
+//     await db.Database.MigrateAsync();
+// }
 
 app.UseSwagger();
 app.UseSwaggerUI();

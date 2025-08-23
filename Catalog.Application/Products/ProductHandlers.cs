@@ -19,6 +19,18 @@ public class ListProductsHandler : IRequestHandler<ListProducts, IReadOnlyList<P
         => _reader.List(request.Skip, request.Take, cancellationToken);
 }
 
+public class GetProductsByIdsHandler : IRequestHandler<GetProductsByIds, List<ProductDto>>
+{
+    private readonly IProductReader _reader;
+    public GetProductsByIdsHandler(IProductReader reader) => _reader = reader;
+
+    public async Task<List<ProductDto>> Handle(GetProductsByIds request, CancellationToken ct)
+    {
+        if (request.Ids == null || request.Ids.Count == 0) return new List<ProductDto>();
+        return await _reader.ByIds(request.Ids, ct);
+    }
+}
+
 public class CreateProductHandler : IRequestHandler<CreateProduct, Guid>
 {
     private readonly IProductUniqueness _uniqueness;

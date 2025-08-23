@@ -6,6 +6,7 @@ public interface IProductReader
 {
     Task<ProductDto?> ById(Guid id, CancellationToken ct);
     Task<IReadOnlyList<ProductDto>> List(int skip, int take, CancellationToken ct);
+    Task<List<ProductDto>> ByIds(List<Guid> ids, CancellationToken ct);
 }
 
 public interface IProductWriter

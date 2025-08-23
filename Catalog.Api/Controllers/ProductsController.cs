@@ -96,4 +96,18 @@ public class ProductsController : ControllerBase
             return NotFound(new { error = ex.Message });
         }
     }
+
+    /// <summary>
+    /// Get product details for a batch of product IDs.
+    /// </summary>
+    [HttpPost("batch")]
+    [ProducesResponseType(typeof(List<ProductDto>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<List<ProductDto>>> GetBatch([FromBody] List<Guid> ids, CancellationToken ct)
+    {
+        if (ids == null || ids.Count == 0) return Ok(new List<ProductDto>());
+        // Use the existing ListProducts handler, but filter by IDs
+        // We'll need a new MediatR request for this
+        var result = await _mediator.Send(new GetProductsByIds(ids), ct);
+        return Ok(result);
+    }
 }
