@@ -1,9 +1,6 @@
 using MediatR;
-using Procurement.Application.Catalog;
 using Procurement.Application.Suppliers; // Add this for handler type
 using Procurement.Infrastructure;
-using Procurement.Infrastructure.Catalog;
-using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
