@@ -1,6 +1,5 @@
 using MediatR;
 using Procurement.Application.Suppliers;
-using System.Net.Http;
 using System.Net.Http.Json;
 
 namespace Procurement.Application.SupplierProducts;
