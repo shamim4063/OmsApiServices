@@ -1,7 +1,8 @@
+using BuildingBlocks.Web.Errors;
 using Catalog.Infrastructure;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
-using MediatR;
 
 var builder = WebApplication.CreateBuilder(args);
 //builder.Host.UseSerilog((ctx, lc) => lc.ReadFrom.Configuration(ctx.Configuration));
@@ -22,6 +23,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+app.UseProblemDetails(); // <- Our custom ProblemDetails(Error) middleware
 //app.UseSerilogRequestLogging();
 
 app.MapHealthChecks("/healthz");

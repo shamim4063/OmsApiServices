@@ -1,3 +1,5 @@
+using BuildingBlocks.Web.Errors;
+using BuildingBlocks.Web.Http;
 using MediatR;
 using Procurement.Application.Suppliers; // Add this for handler type
 using Procurement.Infrastructure;
@@ -22,15 +24,16 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
-// Base URL comes from config (dev: docker-compose DNS, prod: K8s Service DNS)
+// Base URL comes from config
 builder.Services.AddHttpClient("Catalog", client =>
 {
     client.BaseAddress = new Uri(builder.Configuration["Services:Catalog:BaseUrl"]!);
     client.Timeout = TimeSpan.FromSeconds(10);
-});
+}).AddStandardResilience();
 
 
 var app = builder.Build();
+app.UseProblemDetails(); // <- Our custom ProblemDetails(Error) middleware
 //app.UseSerilogRequestLogging();
 
 app.MapHealthChecks("/healthz");
