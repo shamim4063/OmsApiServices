@@ -2,15 +2,15 @@ services:
   postgres:
     image: postgres:16
     environment:
-      POSTGRES_USER: erp
-      POSTGRES_PASSWORD: erp
-      POSTGRES_DB: erp
-    ports: ["5432:5432"]
+      POSTGRES_USER: omsadmin
+      POSTGRES_PASSWORD: 123qwe
+      POSTGRES_DB: postgres
+    ports: ["5435:5432"]
     volumes: ["pgdata:/var/lib/postgresql/data"]
   pgadmin:
     image: dpage/pgadmin4
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@local
+      PGADMIN_DEFAULT_EMAIL: admin@local.com
       PGADMIN_DEFAULT_PASSWORD: admin
     ports: ["8081:80"]
 volumes:
