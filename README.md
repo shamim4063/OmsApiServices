@@ -8,6 +8,7 @@
       <img src="https://img.shields.io/badge/Docker-Compose-blue?logo=docker" />
       <img src="https://img.shields.io/badge/YARP-ReverseProxy-green" />
       <img src="https://img.shields.io/badge/MassTransit-RabbitMQ-orange" />
+      <img src="https://img.shields.io/badge/Orchestration-K8s-green" />
    </p>
 </div>
 
