@@ -86,11 +86,13 @@ OmsApiServices.sln
 
    <br/>
    <b>Apply Migration:</b>
+   <br/>
+      
    ```powershell
    dotnet ef database update  list -p .\Catalog.Infrastructure -s .\Catalog.Api\
    dotnet ef database update  list -p .\Procurement.Infrastructure -s .\Procurement.Api\
    ```
-   
+
    <sub>Tip: If migration fails initially, run the commands again after DB is ready.</sub>
    
 ### 2. Run Catalog service
