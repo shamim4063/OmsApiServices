@@ -1,28 +1,34 @@
+
+# ERP Infra: Postgres, pgAdmin, RabbitMQ, Redis
 services:
+  # PostgreSQL database service
   postgres:
     image: postgres:16
     environment:
-      POSTGRES_USER: omsadmin
-      POSTGRES_PASSWORD: 123qwe
-      POSTGRES_DB: postgres
-    ports: ["5435:5432"]
-    volumes: ["pgdata:/var/lib/postgresql/data"]
+      POSTGRES_USER: omsadmin         # Database superuser
+      POSTGRES_PASSWORD: 123qwe       # Superuser password
+      POSTGRES_DB: postgres           # Default database to create
+    ports: ["5435:5432"]             # Expose Postgres on host port 5435
+    volumes: ["pgdata:/var/lib/postgresql/data"]  # Persist data between restarts
+
+  # pgAdmin web UI for managing Postgres
   pgadmin:
     image: dpage/pgadmin4
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@local.com
-      PGADMIN_DEFAULT_PASSWORD: admin
-    ports: ["8081:80"]
+      PGADMIN_DEFAULT_EMAIL: admin@local.com   # Login email for pgAdmin
+      PGADMIN_DEFAULT_PASSWORD: admin          # Login password for pgAdmin
+    ports: ["8081:80"]                        # Expose pgAdmin on host port 8081
 
+  # RabbitMQ message broker with management UI
   rabbitmq:
     image: rabbitmq:3.13-management
     container_name: rabbitmq
     environment:
-      RABBITMQ_DEFAULT_USER: omsadmin
-      RABBITMQ_DEFAULT_PASS: 123qwe
+      RABBITMQ_DEFAULT_USER: omsadmin         # RabbitMQ admin user
+      RABBITMQ_DEFAULT_PASS: 123qwe           # RabbitMQ admin password
     ports:
-      - "5672:5672"    # AMQP
-      - "15672:15672"  # Management UI
+      - "5672:5672"    # AMQP protocol (for apps)
+      - "15672:15672"  # RabbitMQ Management UI (http://localhost:15672)
     volumes:
       - rabbitmq-data:/var/lib/rabbitmq
     healthcheck:
@@ -32,6 +38,26 @@ services:
       retries: 5
     restart: unless-stopped
 
+  # Redis cache (with password and persistence)
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    command: /bin/sh -c "redis-server --save 60 1000 --appendonly yes --requirepass 3Sdjf!d@xnRq --port 6382"
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6382:6382"   # Expose Redis on host port 6382
+    expose:
+      - "6382"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+# Docker named volumes for data persistence
 volumes:
   pgdata:
   rabbitmq-data:
+  redis-data:
