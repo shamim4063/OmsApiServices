@@ -117,6 +117,22 @@ OmsApiServices.sln
    - [Catalog Swagger](https://localhost:5101/swagger/index.html)
    - [Procurement Swagger](http://localhost:5102/swagger/index.html)
 
+## 🖥️ Running with Visual Studio (Multiple Startup Projects)
+
+You can run the API Gateway and multiple microservices at once using Visual Studio:
+
+1. **Right-click the solution** in Solution Explorer and select <b>Set Startup Projects…</b>
+2. Choose <b>Multiple startup projects</b>.
+3. For each project you want to run (e.g., <code>Gateway.Api</code>, <code>Catalog.Api</code>, <code>Procurement.Api</code>), set the <b>Action</b> to <b>Start</b>.
+4. Click <b>OK</b>.
+5. Press <kbd>F5</kbd> or click <b>Start</b> to launch all selected services together.
+
+<details>
+<summary><b>Screenshot Example</b> (click to expand)</summary>
+
+<img src="https://learn.microsoft.com/en-us/visualstudio/ide/media/vs-2019/solution-properties-multistart.png" alt="Visual Studio Multiple Startup Projects" width="600"/>
+
+</details>
 
 ---
 
