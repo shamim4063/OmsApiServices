@@ -130,7 +130,7 @@ You can run the API Gateway and multiple microservices at once using Visual Stud
 <details>
 <summary><b>Screenshot Example</b> (click to expand)</summary>
 
-<img src="https://learn.microsoft.com/en-us/visualstudio/ide/media/vs-2019/solution-properties-multistart.png" alt="Visual Studio Multiple Startup Projects" width="600"/>
+<img src="https://learn.microsoft.com/en-us/visualstudio/ide/media/vs-2022/solution-properties-dialog.png?view=vs-2017&viewFallbackFrom=vs-2022" alt="Visual Studio Multiple Startup Projects" width="600"/>
 
 </details>
 
