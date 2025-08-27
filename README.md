@@ -1,7 +1,7 @@
 
 <div align="center">
    <h1>OmsApiServices Monorepo</h1>
-   <p><b>ERP Microservices Backend</b> — <code>.NET 9</code> · <code>PostgreSQL</code> · <code>Docker</code> · <code>YARP</code> · <code>MassTransit</code></p>
+   <p><b>ERP Microservices Backend</b> — <code>.NET 9</code> · <code>PostgreSQL</code> · <code>Docker</code> · <code>YARP</code> · <code>MassTransit</code> · <code>K8s</code></p>
    <p>
       <img src="https://img.shields.io/badge/.NET-9.0-blueviolet?logo=dotnet" />
       <img src="https://img.shields.io/badge/PostgreSQL-16-blue?logo=postgresql" />
