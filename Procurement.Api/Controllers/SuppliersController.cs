@@ -29,7 +29,7 @@ public class SuppliersController : ControllerBase
 
     /// <summary>Create a new supplier.</summary>
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateSupplier cmd, CancellationToken ct)
+    public async Task<IActionResult> Create([FromBody] CreateSupplierCommand cmd, CancellationToken ct)
     {
         var id = await _mediator.Send(cmd, ct);
         return CreatedAtAction(nameof(GetById), new { id }, null);

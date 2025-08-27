@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Net;
-using System.Text.Json;
 
 namespace BuildingBlocks.Web.Errors;
 
@@ -34,12 +31,8 @@ public sealed class ProblemDetailsMiddleware(RequestDelegate next, IHostEnvironm
             context.Response.ContentType = "application/problem+json";
 
             // Serialize ProblemDetails as camelCase JSON (indented in development)
-            var json = JsonSerializer.Serialize(problem, new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                WriteIndented = env.IsDevelopment()
-            });
 
+            var json = JsonConvert.SerializeObject(problem, Formatting.Indented);
             await context.Response.WriteAsync(json);
         }
     }
@@ -48,22 +41,21 @@ public sealed class ProblemDetailsMiddleware(RequestDelegate next, IHostEnvironm
     /// Maps known exception types to ProblemDetails with appropriate status, title, and details.
     /// Falls back to 500 for unknown exceptions.
     /// </summary>
-    private static ProblemDetails MapToProblemDetails(Exception ex, IHostEnvironment env, string traceId)
+    private static Microsoft.AspNetCore.Mvc.ProblemDetails MapToProblemDetails(
+    Exception ex, IHostEnvironment env, string traceId)
     {
-        // Default 500 Internal Server Error
         var status = StatusCodes.Status500InternalServerError;
         var title = "An unexpected error occurred.";
-        string? detail = env.IsDevelopment() ? ex.ToString() : null; // Show stack only in dev
+        string? detail = env.IsDevelopment() ? ex.ToString() : null;
         string type = "https://httpstatuses.com/500";
 
-        // Map known exception types to ProblemDetails
         switch (ex)
         {
             case ValidationException vex:
                 status = StatusCodes.Status400BadRequest;
                 title = "One or more validation errors occurred.";
                 type = "https://httpstatuses.com/400";
-                return new ValidationProblemDetails(vex.Errors)
+                return new Microsoft.AspNetCore.Mvc.ValidationProblemDetails(vex.Errors)
                 {
                     Title = title,
                     Status = status,
@@ -87,36 +79,36 @@ public sealed class ProblemDetailsMiddleware(RequestDelegate next, IHostEnvironm
 
             case ForbiddenException fe:
                 status = StatusCodes.Status403Forbidden;
-                title = fe.Message is { Length: > 0 } ? fe.Message : "Forbidden";
+                title = string.IsNullOrWhiteSpace(fe.Message) ? "Forbidden" : fe.Message;
                 type = "https://httpstatuses.com/403";
                 break;
 
             case ConflictException ce:
                 status = StatusCodes.Status409Conflict;
-                title = ce.Message is { Length: > 0 } ? ce.Message : "Conflict";
+                title = string.IsNullOrWhiteSpace(ce.Message) ? "Conflict" : ce.Message;
                 type = "https://httpstatuses.com/409";
                 break;
 
             case DownstreamHttpException de:
-                status = (int)HttpStatusCode.BadGateway;
+                status = StatusCodes.Status502BadGateway;
                 title = "Downstream service error";
                 type = "https://httpstatuses.com/502";
-                return new ProblemDetails
+                return new Microsoft.AspNetCore.Mvc.ProblemDetails
                 {
                     Title = title,
                     Status = status,
                     Type = type,
                     Detail = env.IsDevelopment() ? de.Body ?? de.Message : null,
                     Extensions =
-                    {
-                        ["traceId"] = traceId,
-                        ["downstreamStatus"] = (int)de.StatusCode,
-                        ["downstreamBody"] = env.IsDevelopment() ? de.Body : null
-                    }
+                {
+                    ["traceId"]          = traceId,
+                    ["downstreamStatus"] = (int)de.StatusCode,
+                    ["downstreamBody"]   = env.IsDevelopment() ? de.Body : null
+                }
                 };
         }
 
-        return new ProblemDetails
+        return new Microsoft.AspNetCore.Mvc.ProblemDetails
         {
             Title = title,
             Status = status,
@@ -125,6 +117,7 @@ public sealed class ProblemDetailsMiddleware(RequestDelegate next, IHostEnvironm
             Extensions = { ["traceId"] = traceId }
         };
     }
+
 }
 
 /*

@@ -1,5 +1,6 @@
 using BuildingBlocks.Web.Errors;
 using BuildingBlocks.Web.Http;
+using BuildingBlocks.Web.Validation;
 using MediatR;
 using Procurement.Application.Suppliers; // Add this for handler type
 using Procurement.Infrastructure;
@@ -16,10 +17,12 @@ builder.Services.AddProcurementInfrastructure();
 // Add MediatR for Application layer
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<GetSupplierByIdHandler>());
 
+// Register validators from Application and add the global controller validation filter
+builder.Services.AddGlobalFluentValidation(typeof(CreateSupplierCommandValidator).Assembly);
+
 builder.Services.AddHealthChecks()
     .AddNpgSql(builder.Configuration.GetSection("Database")["ConnectionString"]!);
 
-builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
