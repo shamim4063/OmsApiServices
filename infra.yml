@@ -40,7 +40,7 @@ services:
 
   # Redis cache (with password and persistence)
   redis:
-    image: redis:7-alpine
+    image: redis:6.2-alpine
     container_name: redis
     command: /bin/sh -c "redis-server --save 60 1000 --appendonly yes --requirepass 3Sdjf!d@xnRq --port 6382"
     volumes:
