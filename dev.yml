@@ -1,32 +1,40 @@
+version: '3.8'
+
 services:
-  gateway.api:
+  catalog-api:
     build:
-      context: ../..
-      dockerfile: Src/Services/Gateway/Gateway.Api/Dockerfile
-    environment:
-      ASPNETCORE_URLS: http://+:8080
+      context: .
+      dockerfile: Catalog.Api/Dockerfile
     ports:
-      - "8080:8080"
-    depends_on:
-      - catalog.api
-      - inventory.api
-      - sales.api
-
-  catalog.api:
-    build:
-      context: ../..
-      dockerfile: Src/Services/Catalog/Catalog.Api/Dockerfile
+      - "5001:8080"
     environment:
-      ASPNETCORE_URLS: http://+:8080
-      Database__ConnectionString: Host=postgres;Port=5432;Database=erp;Username=erp;Password=erp
-      Database__Schema: catalog
-    expose: [ "8080" ]
-    depends_on: [ postgres ]
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__Default=Host=host.docker.internal;Port=5435;Database=postgres;Username=omsadmin;Password=123qwe
+      - RabbitMQ__Host=host.docker.internal
+      - RabbitMQ__Port=5672
+      - RabbitMQ__User=omsadmin
+      - RabbitMQ__Pass=123qwe
 
-  #inventory.api:
-    # similar pattern...
-   # expose: [ "8080" ]
+  procurement-api:
+    build:
+      context: .
+      dockerfile: Procurement.Api/Dockerfile
+    ports:
+      - "5002:8081"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__Default=Host=host.docker.internal;Port=5435;Database=postgres;Username=omsadmin;Password=123qwe
+      - RabbitMQ__Host=host.docker.internal
+      - RabbitMQ__Port=5672
+      - RabbitMQ__User=omsadmin
+      - RabbitMQ__Pass=123qwe
 
-  #sales.api:
-    # similar pattern...
-    # expose: [ "8080" ]
+  gateway-api:
+    build:
+      context: .
+      dockerfile: Gateway.Api/Dockerfile
+    ports:
+      - "5000:8082"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      # Add any gateway-specific env vars here
